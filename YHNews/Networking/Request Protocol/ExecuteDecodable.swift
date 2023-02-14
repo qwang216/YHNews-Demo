@@ -1,23 +1,19 @@
 //
-//  ViewController.swift
+//  ExecuteDecodable.swift
 //  YHNews
 //
-//  Created by Jason Wang on 2/11/23.
+//  Created by Jason Wang on 2/14/23.
 //
 
 import Foundation
 
-enum NewsAPIError: Error {
-    case apiNetworkError
-}
-
-protocol NewsAPIConfigurable: NewsExecutable, DecodableObject {
+protocol ExecuteDecodable: Executable, DecodableObject {
     @discardableResult
     func executeDecodableRequest<T: Decodable>(queue: DispatchQueue,
                                                objectType: T.Type,
                                                onCompletion: @escaping (Result<T, NewsAPIError>) -> Void) -> URLSessionDataTask?
 }
-extension NewsAPIConfigurable {
+extension ExecuteDecodable {
     @discardableResult
     func executeDecodableRequest<T: Decodable>(queue: DispatchQueue,
                                                objectType: T.Type,
@@ -26,7 +22,7 @@ extension NewsAPIConfigurable {
             switch result {
             case .success(let data):
                 let response = Self.decode(objectType, from: data)
-                if case .success(let responseData) = data {
+                if case .success(let responseData) = response {
                     onCompletion(.success(responseData))
                 } else {
                     onCompletion(.failure(.apiNetworkError))

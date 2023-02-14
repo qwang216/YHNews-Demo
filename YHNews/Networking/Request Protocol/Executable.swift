@@ -1,21 +1,13 @@
 //
-//  ViewController.swift
+//  Executable.swift
 //  YHNews
 //
-//  Created by Jason Wang on 2/11/23.
+//  Created by Jason Wang on 2/14/23.
 //
 
 import Foundation
 
-protocol Executable: ResponseMapper {
-    var scheme: String { get }
-    var baseURL: String { get }
-    var method: HTTPMethod { get }
-    var relativePath: String { set get }
-    var url: URL? { get }
-    var queryItems: [URLQueryItem]? { get }
-    var body: JSON? { get }
-    var header: HTTPHeader? { get }
+protocol Executable: Requestable, ResponseMapper {
     @discardableResult
     func executeRequest(queue: DispatchQueue,
                         session: URLSession,
@@ -23,17 +15,6 @@ protocol Executable: ResponseMapper {
 }
 
 extension Executable {
-    var url: URL? {
-        var urlComponents = URLComponents()
-        urlComponents.scheme = scheme
-        urlComponents.host = baseURL
-        urlComponents.path = relativePath
-        if let items = queryItems {
-            urlComponents.queryItems = items
-        }
-        return urlComponents.url
-    }
-
     @discardableResult
     func executeRequest(queue: DispatchQueue = .main,
                         session: URLSession = .shared,

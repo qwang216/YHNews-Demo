@@ -10,8 +10,13 @@ import Foundation
 struct NYTAPIConstant {
     static let apiKey = "tll3FdJtVIbk1snPkGcF5ZffNP2ktLhy"
 }
-protocol NewsExecutable: Executable {}
-extension NewsExecutable {
+
+enum NewsAPIError: Error {
+    case apiNetworkError
+}
+
+protocol NewsAPIExecutable: Requestable, ExecuteDecodable {}
+extension NewsAPIExecutable {
     var scheme: String {
         "https"
     }

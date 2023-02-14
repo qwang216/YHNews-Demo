@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol ImageExecutable: Executable {
+protocol ImageAPIExecutable: Requestable {
     var absoluteURLString: String { get set }
 }
-extension ImageExecutable {
+extension ImageAPIExecutable {
     var url: URL? {
         URL(string: absoluteURLString)
     }
